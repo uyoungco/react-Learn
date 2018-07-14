@@ -28,7 +28,7 @@ class App extends Component {
                   <Link to="/">nav 1</Link>
                 </Menu.Item>
                 <Menu.Item key="2">
-                  <Link to="/two">nav 2</Link>
+                  <Link to="/id/571338279">根据ID查询</Link>
                 </Menu.Item>
                 <Menu.Item key="3">
                   <Link to="/three">nav 3</Link>
@@ -43,7 +43,7 @@ class App extends Component {
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©2016 Created by Ant UED
+            uyoung ©2018 Created by uyoung
           </Footer>
         </Layout>
 

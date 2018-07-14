@@ -1,48 +1,69 @@
 import React from 'react'
 
-import { Card, Rate } from 'antd';
+import { Card, Badge } from 'antd';
+import Axios from 'axios';
 
 class Cards extends React.Component {
-  state = {
-    value: 3,
-    data: [
-      {content: '曾经爱了一个男生四年，后来和认识了三天的男孩在一起，我等了他四年，却始终不是他心尖上的人，我认识他三天，可他却像宝贝一样的爱我。我只想说别纠结于时间的长短，用时间来捆绑自己终究不公平。', 
-        author:'鹿先森乐队《春风十里》',
-        time: '06月28日'
-      },
-      {
-        content: '那时你坐在自行车后面轻轻的哼着这首歌，可一晃都8年过去了，我们偶有交集，却再也回不去了',
-        author: '《你要的爱》',
-        time: '06月27日'
-      },
-      {
-        content: '那时你坐在自行车后面轻轻的哼着这首歌',
-        author: '《你要的爱》',
-        time: '06月26日'
-      }
-    ]
+  constructor(props) {
+    // 占位
+    super(props)
+    this.state = {
+      id: 186016,
+      musicinfo: {},
+      data: [],
+      loading: false
+    }
   }
-  handleChange = (value) => {
-    this.setState({ value });
+  componentDidMount() {
+    Axios.get(`http://localhost:4000/song/detail?ids=${this.state.id}`)
+    // .then(res => console.log(res.data.songs[0]))
+      .then(res => this.setState({
+        loading: true,
+        musicinfo: res.data.songs[0]
+      }))
+    Axios.get(`http://localhost:4000/comment/music?id=${this.state.id}&limit=0`)
+      .then(res => this.setState({
+        data: res.data.hotComments 
+      }))
   }
 
+  // 处理时间
+  handletime = (dates) => {
+    const date = new Date(dates);
+    const Y = date.getFullYear() + '年';
+    const M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '月';
+    const D = date.getDate() + '日';
+    // h = date.getHours() + ':';
+    // m = date.getMinutes() + ':';
+    // s = date.getSeconds(); 
+    // console.log(Y+M+D+h+m+s); //呀麻碟
+    // console.log(`${Y}${M}${D}`)
+    return Y + M + D
+  }
+  // 处理歌曲ID
+
+
   render() {
-    const { value, data } = this.state;
+    const { data, musicinfo, loading } = this.state;
+    console.log(this.state)
+    console.log(this.props) 
+    // title={this.handleMusicName(id)} 
     return(
       <div>
-        {data.map(item => 
-          <Card key={item.content} hoverable style={{ backgroundColor: '#fff', margin: '30px 0' }}>
-            <p>{item.content}</p>
-            <p style={{ textAlign: 'right' }}>——{item.author}</p>
-            <div style={{ textAlign: 'right' }}>
-              <time className="card-time">{item.time}</time>
-              <span>
-                <Rate onChange={this.handleChange} value={value} />
-                {value && <span className="ant-rate-text">{value} stars</span>}
-              </span>
-            </div>
-          </Card>
-        )}
+        { loading ? data.map(item => 
+            <Card title={`${musicinfo.name}--(${musicinfo.ar[0].name})`} key={item.commentId} hoverable style={{ backgroundColor: '#fff', margin: '30px 0' }}>
+              <p>{item.content}</p>
+              <p style={{ textAlign: 'right' }}>{item.user.nickname}</p>
+              <div style={{ textAlign: 'right' }}>
+                <time className="card-time">{this.handletime(item.time)}</time>
+                <span>
+                <Badge count={item.likedCount} overflowCount={99999} />
+                </span>
+              </div>
+            </Card>
+          ) :
+          <p>加载中</p>
+        }
       </div>
     )
   }
