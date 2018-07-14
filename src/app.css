@@ -1,0 +1,40 @@
+.ant-layout-header {
+  margin-bottom: 30px;
+}
+.ant-layout-header .logo {
+  width: 120px;
+  height: 31px;
+  background: rgba(255,255,255,.2);  
+  margin: 16px 24px 16px 0;
+  float: left;
+}
+
+.ant-layout-content .diycontent {
+  margin-top: 30px;
+}
+
+
+/* banner */
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 260px;
+  line-height: 260px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
+  font-size: 80px;
+}
+/* 1170px */
+.container-1170 {
+  width: 1170px;
+  margin: 0 auto;
+}
+
+/* card */
+.card-time {
+  color: #999999;
+  margin-right: 10px;
+}
